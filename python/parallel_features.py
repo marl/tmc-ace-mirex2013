@@ -25,7 +25,9 @@ def call_matlab(args):
 def main(args):
     """Main routine for staging parallelization."""
     files = F.load_textlist(args.file_list)
-    file_lists = [F.dump_textlist(files[n::args.num_cpus], F.temp_file('txt'))
+    temp_dir = F.create_directory("tmpdir")
+    temp_fmt = os.path.join(temp_dir, "deleteme-%d.txt")
+    file_lists = [F.dump_textlist(files[n::args.num_cpus], temp_fmt % n)
                   for n in range(args.num_cpus)]
 
     pool = Pool(processes=NUM_CPUS)
