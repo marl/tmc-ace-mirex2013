@@ -32,13 +32,13 @@ def main(args):
         file_lists.append(temp_fmt % n)
         F.dump_textlist(files[n::args.num_cpus], file_lists[-1])
 
-    pool = Pool(processes=NUM_CPUS)
-    output_dir = F.create_directory(args.output_directory)
-    pool.map_async(
-        func=call_matlab,
-        iterable=zip(file_lists, [output_dir]*args.num_cpus))
-    pool.close()
-    pool.join()
+#    pool = Pool(processes=NUM_CPUS)
+#    output_dir = F.create_directory(args.output_directory)
+#    pool.map_async(
+#        func=call_matlab,
+#        iterable=zip(file_lists, [output_dir]*args.num_cpus))
+#    pool.close()
+#    pool.join()
 
 
 if __name__ == "__main__":
