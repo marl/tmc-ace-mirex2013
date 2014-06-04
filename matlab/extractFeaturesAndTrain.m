@@ -74,6 +74,6 @@ save(gmmfile, 'gmm_set', 'chordSet', 'transmat');
 load(gmmfile);
 
 fprintf('Optimizing Transition penalty \n');
-opt_penalty = find_opt_penalty(list, model, gmmfile, 1, 'bi');
+opt_penalty = find_opt_penalty(list, features, model, gmmfile, 1, 'bi');
 
 save(gmmfile, 'gmm_set', 'chordSet', 'transmat', 'opt_penalty');

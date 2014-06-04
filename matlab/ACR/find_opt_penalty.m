@@ -11,8 +11,8 @@ function opt_penalty = find_opt_penalty(list, features, model, gmmfile, penalty,
 %   ...?
 % penalty: scalar
 %   Viterbi self-transition penalty.
-% T: ?
-%   ...?
+% T: str
+%   'bi' is at least one acceptable value...?
 
 nFold = 3;
 nSongs = size(list{1}, 1);

@@ -1,4 +1,4 @@
-function chordCounts = extractFeatures(list, scratch, chordSet, band)
+function chordCounts = extractFeatures(list, features, chordSet, band)
 
 qualitySet = zeros(size(chordSet));
 for i = 1:length(chordSet)
@@ -8,7 +8,7 @@ end
 
 numSong = length(list{1});
 
-makedir(scratch);
+makedir(features);
 
 chordCounts = zeros(length(chordSet), 1); % for containing a sample count for each chord
 
@@ -18,7 +18,7 @@ for song = list{1}'
     fprintf('%s (%d/%d)\n', song{1}, count, numSong);
 
     [~, name, ext] = fileparts(song{1});
-    featureFileName = [scratch filesep name ext '.mat'];
+    featureFileName = [features filesep name ext '.mat'];
 
     if exist(featureFileName, 'file')
         fprintf('-> Feature file exists');
