@@ -23,8 +23,8 @@ fclose(fid);
 
 %% Extracting Features
 
-fprintf('Extracting Features \n');
-chordCounts = extractFeatures(list, features, chordSet, band);
+% fprintf('Extracting Features \n');
+% chordCounts = extractFeatures(list, features, chordSet, band);
 
 %% Generating Training Data
 
