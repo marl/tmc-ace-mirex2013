@@ -16,36 +16,36 @@ count = 0;
 for song = list{1}'
     count = count +1;
     fprintf('%s (%d/%d)\n', song{1}, count, numSong);
-    
+
     [~, name, ext] = fileparts(song{1});
     featureFileName = [scratch filesep name ext '.mat'];
-    
-    if exist(featureFileName, 'file') 
-        fprintf('-> Feature file exist');
+
+    if exist(featureFileName, 'file')
+        fprintf('-> Feature file exists');
         load(featureFileName);
     else
-        [chroma, beats_in_time] = extractMultibandChroma(song{1}, band);
-        
+        [chroma, beats_in_time, endT] = extractMultibandChroma(song{1}, band);
+
         labFile_name = [song{1} '.txt'];
         labseg = bs_lab2seg(labFile_name, beats_in_time);
-    
-        save(featureFileName, 'chroma', 'beats_in_time', 'labseg');
-    end        
-            
+
+        save(featureFileName, 'chroma', 'beats_in_time', 'labseg', 'endT');
+    end
+
     for m = 1:length(labseg)
         if labseg(m) >= 0
             cs = cid2chordStruct(labseg(m));
-            
+
             % update chordQualityCount to measure the training data size
             for n = 1:length(qualitySet)
                 if qualitySet(n) == cs.quality
                     chordCounts(n) = chordCounts(n) + 1;
                 end
             end
-            
+
         end
     end
- 
+
     fprintf('-> Done\n');
 end
 
