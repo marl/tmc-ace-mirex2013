@@ -10,7 +10,7 @@ addpath('./MATLAB-Tempogram-Toolbox_1.0');
 if ~exist(features)
     makedir(features);
 end
-if ~exist(features)
+if ~exist(model)
     makedir(model);
 end
 
