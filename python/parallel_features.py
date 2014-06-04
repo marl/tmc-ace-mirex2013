@@ -19,8 +19,7 @@ def call_matlab(args):
     -------
     Nothing, but the output file is written in this call.
     """
-    print "./extractFeaturesForList.sh %s %s" % args
-    # os.system("./extractFeaturesForList.sh %s %s" % args)
+    os.system("./extractFeaturesForList.sh %s %s" % args)
 
 
 def main(args):
