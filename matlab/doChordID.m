@@ -1,5 +1,6 @@
 function doChordID(trainFileList, scratch, results)
 
+addpath('./mp3readwrite');
 addpath('./chord_Utils');
 addpath('./ACR');
 addpath('./MATLAB-Tempogram-Toolbox_1.0');
@@ -52,15 +53,15 @@ for song = list{1}'
     fprintf('%s (%d/%d)\n', song{1}, count, numSong);
     [pathstr, name, ext] = fileparts(song{1});
     [chroma, beats_in_time, endT] = extractMultibandChroma(song{1}, band);
-    
+
     fprintf(' -> Analyzing chords\n');
-    
+
     w = 1/band;
     for b = 1:band
         if b == 1
             obslik = zeros((length(chordSet)-1)*12 + 1, size(chroma{1}, 2));
         end
-        
+
         c_idx = 1;
         for m = 1:length(chordSet)
             gmm = gmm_set{m, b};
@@ -78,31 +79,31 @@ for song = list{1}'
                     else
                         obslik(c_idx, : ) = obslik(c_idx, : ) .* pdf(gmm, circshift(chroma{b}, -key)')';
                     end
-                    
+
                     c_idx = c_idx+1;
                 end
             end
         end
-        
+
     end
-    
+
     obslik = obslik.^w;
-    
+
     cd = viterbi(ones(Q,1)/Q, transmat, obslik, opt_penalty);
     if beats_in_time(1) ~= 0
         beats_in_time = [0; beats_in_time];
         cd = [index_map('N') cd];
     end
-    
+
     if beats_in_time(end) < endT
         beats_in_time = [beats_in_time; endT];
         cd = [cd index_map('N')];
     end
-    
+
     idx = find(diff([-1 cd]) ~=0);
     cd = cd(idx);
     beats_in_time = [beats_in_time(idx); endT];
-    
+
     file = [results filesep name ext '.txt'];
     fid = fopen(file, 'w');
     for i = 1:length(beats_in_time) - 1

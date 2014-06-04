@@ -2,6 +2,7 @@ function extractFeaturesAndTrain(trainFileList, scratch)
 
 band = 4;
 
+addpath('./mp3readwrite');
 addpath('./chord_Utils');
 addpath('./ACR');
 addpath('./MATLAB-Tempogram-Toolbox_1.0');
@@ -38,12 +39,12 @@ gmmfile = [gmmfileDir filesep gmm_name];
 gmm_set = cell(length(chordSet), band);
 options = statset('Display','iter', 'MaxIter', 300); %, 'UseParallel', 'always');
 
-for n = 1:length(chordSet)  
+for n = 1:length(chordSet)
     samplesize = size(tr_set{n, 1}, 2);
     if samplesize < 50
         error('Too small training data for %s chord', chordSet{n});
     end
-    
+
     for b = 1:band
         fprintf('initialize %s chord model for %d band on %d samples\n', chordSet{n}, b, samplesize);
         IDX = kmeans(tr_set{n, b}',k,'Options',options, 'EmptyAction', 'singleton');
@@ -51,7 +52,7 @@ for n = 1:length(chordSet)
         gmm_set{n, b} = gmdistribution.fit(tr_set{n, b}',k,'Start', IDX, 'Regularize', reg, 'Options', options);
     end
 end
-    
+
 makedir(gmmfileDir);
 save(gmmfile, 'gmm_set', 'chordSet', 'transmat');
 
