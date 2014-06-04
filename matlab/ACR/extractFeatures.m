@@ -1,0 +1,51 @@
+function chordCounts = extractFeatures(list, scratch, chordSet, band)
+
+qualitySet = zeros(size(chordSet));
+for i = 1:length(chordSet)
+    cs = cid2chordStruct( chord2cid(chordSet{i}));
+    qualitySet(i) = cs.quality;
+end
+
+numSong = length(list{1});
+
+makedir(scratch);
+
+chordCounts = zeros(length(chordSet), 1); % for containing a sample count for each chord
+
+count = 0;
+for song = list{1}'
+    count = count +1;
+    fprintf('%s (%d/%d)\n', song{1}, count, numSong);
+    
+    [~, name, ext] = fileparts(song{1});
+    featureFileName = [scratch filesep name ext '.mat'];
+    
+    if exist(featureFileName, 'file') 
+        fprintf('-> Feature file exist');
+        load(featureFileName);
+    else
+        [chroma, beats_in_time] = extractMultibandChroma(song{1}, band);
+        
+        labFile_name = [song{1} '.txt'];
+        labseg = bs_lab2seg(labFile_name, beats_in_time);
+    
+        save(featureFileName, 'chroma', 'beats_in_time', 'labseg');
+    end        
+            
+    for m = 1:length(labseg)
+        if labseg(m) >= 0
+            cs = cid2chordStruct(labseg(m));
+            
+            % update chordQualityCount to measure the training data size
+            for n = 1:length(qualitySet)
+                if qualitySet(n) == cs.quality
+                    chordCounts(n) = chordCounts(n) + 1;
+                end
+            end
+            
+        end
+    end
+ 
+    fprintf('-> Done\n');
+end
+
