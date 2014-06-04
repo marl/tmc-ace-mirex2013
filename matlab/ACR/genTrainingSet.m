@@ -1,4 +1,17 @@
 function [tr_set, transmat] = genTrainingSet(list, features, model, chordCounts, chordSet, band)
+% Parameters
+% ----------
+% list: cell array?
+%   Audio file paths as strings in an array
+% features: str
+%   Path to feature .mat files matching the base filenames of the items in list.
+% model: str
+%   Path to a directory to write out various model params.
+% chordCounts: ?
+% chordSet: set
+%   String quality types for the classifier to fit.
+% band: int
+%   Number of subband chroma features.
 
 trainingSetFile = [model filesep 'tr_set.mat'];
 transmatFile = [model filesep 'transmat.mat'];

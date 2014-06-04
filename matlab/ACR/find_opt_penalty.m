@@ -1,4 +1,18 @@
-function opt_penalty = find_opt_penalty(list, scratch, gmmfile, penalty, T)
+function opt_penalty = find_opt_penalty(list, features, model, gmmfile, penalty, T)
+% Parameters
+% ----------
+% list: str
+%   Audio file paths as strings in an array
+% features: str
+%   Path to feature .mat files matching the base filenames of the items in list.
+% model: str
+%   Path to a directory to write out various model params.
+% gmmfile: ?
+%   ...?
+% penalty: scalar
+%   Viterbi self-transition penalty.
+% T: ?
+%   ...?
 
 nFold = 3;
 nSongs = size(list{1}, 1);
@@ -17,8 +31,8 @@ for i=1:nFold
 end
 
 
-prev = crossval(folds, scratch, gmmfile, penalty-1, T);
-next = crossval(folds, scratch, gmmfile, penalty, T);
+prev = crossval(folds, features, model, gmmfile, penalty-1, T);
+next = crossval(folds, features, model, gmmfile, penalty, T);
 
 direction = sign(next - prev);
 
@@ -32,14 +46,14 @@ end
 
 while(1)
     next_penalty = prev_penalty + 1 * direction;
-    next = crossval(folds, scratch, gmmfile, next_penalty, T);
-    
+    next = crossval(folds, features, model, gmmfile, next_penalty, T);
+
     if next < prev
         fprintf('Optimal penalty is %d\n\n', -prev_penalty);
         opt_penalty = prev_penalty;
         break;
     end
-    
+
     prev_penalty = next_penalty;
     prev = next;
 end

@@ -1,4 +1,12 @@
 function extractFeaturesAndTrain(trainFileList, features, model)
+% Parameters
+% ----------
+% trainFileList: str
+%   Audio file paths as strings in an array
+% features: str
+%   Path to feature .mat files matching the given base filenames.
+% model: str
+%   Path to a directory to write out various model params.
 
 band = 4;
 

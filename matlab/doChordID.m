@@ -1,4 +1,14 @@
 function doChordID(fileList, features, model, results)
+% Parameters
+% ----------
+% fileList: str
+%   Audio file paths as strings in an array.
+% features: str
+%   Path to feature .mat files matching the given base filenames.
+% model: str
+%   Path to a directory to write out various model params.
+% results: str
+%   Path to a directory to write the resulting estimated labfiles.
 
 addpath('./mp3readwrite');
 addpath('./chord_Utils');
