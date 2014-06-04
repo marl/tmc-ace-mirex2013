@@ -1,4 +1,4 @@
-function extractFeaturesAndTrain(trainFileList, scratch)
+function extractFeaturesAndTrain(trainFileList, features, model)
 
 band = 4;
 
@@ -7,7 +7,12 @@ addpath('./chord_Utils');
 addpath('./ACR');
 addpath('./MATLAB-Tempogram-Toolbox_1.0');
 
-makedir(scratch);
+if ~exist(features)
+    makedir(features);
+end
+if ~exist(features)
+    makedir(model);
+end
 
 chordSet   = {'C:maj', 'C:min', 'C:7', 'C:min7', 'C:maj7', 'C:maj6', 'C:min6', 'C:sus4', 'C:dim', 'C:dim7', 'C:sus2', 'C:aug', 'C:hdim7', 'N'};
 

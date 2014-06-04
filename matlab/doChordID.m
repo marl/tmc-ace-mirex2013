@@ -1,15 +1,15 @@
-function doChordID(trainFileList, scratch, results)
+function doChordID(fileList, features, model, results)
 
 addpath('./mp3readwrite');
 addpath('./chord_Utils');
 addpath('./ACR');
 addpath('./MATLAB-Tempogram-Toolbox_1.0');
 
-if nargin < 3
-    results = scratch;
+if nargin < 4
+    results = model;
     gmm_path = sprintf('./pre-trained');
 else
-    gmm_path = sprintf('%s/model', scratch);
+    gmm_path = sprintf('%s/model', model);
 end
 
 makedir(results);
@@ -39,8 +39,8 @@ Q = size(transmat,1);
 model_map = containers.Map(chordSet, (1:length(chordSet)));
 index_map = containers.Map(chords, 1:length(chords));
 
-fprintf('Read trainFileList \n');
-fid = fopen(trainFileList, 'r');
+fprintf('Read fileList \n');
+fid = fopen(fileList, 'r');
 list = textscan(fid, '%s');
 fclose(fid);
 numSong = length(list{1});
@@ -52,7 +52,18 @@ for song = list{1}'
     count = count +1;
     fprintf('%s (%d/%d)\n', song{1}, count, numSong);
     [pathstr, name, ext] = fileparts(song{1});
-    [chroma, beats_in_time, endT] = extractMultibandChroma(song{1}, band);
+    featureFileName = [features filesep name ext '.mat'];
+    if exist(featureFileName, 'file')
+        fprintf('-> Feature file exists, loading...');
+        load(featureFileName);
+    else
+        [chroma, beats_in_time, endT] = extractMultibandChroma(song{1}, band);
+
+        labFile_name = [song{1} '.txt'];
+        labseg = bs_lab2seg(labFile_name, beats_in_time);
+
+        save(featureFileName, 'chroma', 'beats_in_time', 'labseg', 'endT');
+    end
 
     fprintf(' -> Analyzing chords\n');
 
