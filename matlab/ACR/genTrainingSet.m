@@ -1,7 +1,7 @@
-function [tr_set, transmat] = genTrainingSet(list, scratch, chordCounts, chordSet, band)
+function [tr_set, transmat] = genTrainingSet(list, features, model, chordCounts, chordSet, band)
 
-trainingSetFile = [scratch filesep 'tr_set.mat'];
-transmatFile = [scratch filesep 'transmat.mat'];
+trainingSetFile = [model filesep 'tr_set.mat'];
+transmatFile = [model filesep 'transmat.mat'];
 
 if exist(trainingSetFile, 'file') && exist(transmatFile, 'file')
     load(trainingSetFile);
@@ -9,7 +9,7 @@ if exist(trainingSetFile, 'file') && exist(transmatFile, 'file')
     for m = 1:length(chordSet)
         totalSamples = totalSamples + size(tr_set{m,1}, 2);
     end
-    
+
     if totalSamples == sum(chordCounts)
         return;
     end
@@ -58,21 +58,21 @@ count = 0;
 for song = list{1}'
     count = count +1;
     fprintf('%s (%d/%d)\n', song{1}, count, numSong);
-    
+
     [~, name, ext] = fileparts(song{1});
-    featureFileName = [scratch filesep name ext '.mat'];
+    featureFileName = [features filesep name ext '.mat'];
     fprintf('-> Load features ');
-    load(featureFileName);   
-    
+    load(featureFileName);
+
     labFile_name = [song{1} '.txt'];
     labseg = bs_lab2seg(labFile_name, beats_in_time);
-    
+
     fprintf('-> Updating bigrams and training Data\n');
-        
+
     initial = true;
-    
+
     nochord_idx = cid_index_map(0);
-    
+
     for m = 1:length(labseg)
         if labseg(m) >= 0
             cs = cid2chordStruct(labseg(m));
@@ -84,12 +84,12 @@ for song = list{1}'
                     end
                 end
             end
-            
+
             % calculate transmat
             cs.ext = 0;
             cs.bass = cs.root;
             chord = chordStruct2cid(cs);
-            
+
             if isKey(cid_index_map, chord)
                 if initial == true
                     previous = cs;
@@ -97,18 +97,18 @@ for song = list{1}'
                 else
                     from = previous;
                     to = cs;
-                    
+
                     prev = chordStruct2cid(from);
                     next = chordStruct2cid(to);
-                        
+
                     if from.quality == 0
                         transmat(cid_index_map(prev), cid_index_map(next)) = transmat(cid_index_map(prev), cid_index_map(next)) + 1;
                     else
                         prev_idx = cid_index_map(prev);
                         next_idx = cid_index_map(next);
-                         
+
                         prev_base = fix((prev_idx-1)/12) * 12;
-                                                    
+
                         if next_idx == nochord_idx
                             for t = 0:11
                                 prev_r = rem(prev_idx - 1 + t, 12) + 1;
@@ -121,7 +121,7 @@ for song = list{1}'
                                 next_r = rem(next_idx - 1 + t, 12) + 1;
                                 transmat(prev_base + prev_r, next_base + next_r) = transmat(prev_base + prev_r, next_base + next_r) + 1;
                             end
-                        end      
+                        end
                     end
                     previous = cs;
                 end
