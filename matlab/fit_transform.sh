@@ -6,6 +6,7 @@ FEATURES=tmc_features
 FOLD_IDXS="0"
 BASEDIR=/Users/ejhumphrey
 METADATA=${BASEDIR}/metadata
+FEATURE_DIR=${BASEDIR}/${FEATURES}
 
 ESTIMATIONS=${BASEDIR}/estimations/${FEATURES}/
 MODELS=${BASEDIR}/models/${FEATURES}/
@@ -15,14 +16,14 @@ do
     TRAINLIST=${METADATA}/train${idx}.txt
     matlab -nodisplay -nosplash -r "extractFeaturesAndTrain "\
 "${TRAINLIST} "\
-"${FEATURES} "\
+"${FEATURE_DIR} "\
 "${MODELDIR};exit"
 
     TESTLIST=${METADATA}/test${idx}.txt
     OUTPUTDIR=${ESTIMATIONS}/${idx}/
     matlab -nodisplay -nosplash -r "doChordID "\
 "${TESTLIST} "\
-"${FEATURES} "\
+"${FEATURE_DIR} "\
 "${MODELDIR} "\
 "${OUTPUTDIR};exit"
 done
