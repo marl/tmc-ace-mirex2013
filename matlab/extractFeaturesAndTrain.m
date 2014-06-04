@@ -29,7 +29,7 @@ chordCounts = extractFeatures(list, features, chordSet, band);
 %% Generating Training Data
 
 fprintf('Generating Training Data from the extracted features \n');
-[tr_set, transmat] = genTrainingSet(list, features, scratch, chordCounts, chordSet, band);
+[tr_set, transmat] = genTrainingSet(list, features, model, chordCounts, chordSet, band);
 
 %% Generating Chord Models
 k = 5; % num Gaussians
@@ -37,7 +37,7 @@ reg = 1e-4; % regularization
 
 fprintf('Generating Chord Models \n');
 
-gmmfileDir = [scratch filesep 'model'];
+gmmfileDir = [model filesep 'model'];
 gmm_name = sprintf('chordModel_%d_%.e.mat', k, reg);
 gmmfile = [gmmfileDir filesep gmm_name];
 
@@ -66,6 +66,6 @@ save(gmmfile, 'gmm_set', 'chordSet', 'transmat');
 load(gmmfile);
 
 fprintf('Optimizing Transition penalty \n');
-opt_penalty = find_opt_penalty(list, scratch, gmmfile, 1, 'bi');
+opt_penalty = find_opt_penalty(list, model, gmmfile, 1, 'bi');
 
 save(gmmfile, 'gmm_set', 'chordSet', 'transmat', 'opt_penalty');
