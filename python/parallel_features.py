@@ -28,8 +28,10 @@ def main(args):
     files = F.load_textlist(args.file_list)
     temp_dir = F.create_directory("tmpdir")
     temp_fmt = os.path.join(temp_dir, "deleteme-%d.txt")
-    file_lists = [F.dump_textlist(files[n::args.num_cpus], temp_fmt % n)
-                  for n in range(args.num_cpus)]
+    file_lists = []
+    for n in range(args.num_cpus):
+        file_lists.append(temp_fmt % n)
+        F.dump_textlist(files[n::args.num_cpus], file_lists[-1])
 
     pool = Pool(processes=NUM_CPUS)
     output_dir = F.create_directory(args.output_directory)
