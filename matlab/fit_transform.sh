@@ -2,7 +2,8 @@
 
 FEATURES=tmc_features
 
-FOLD_IDXS=$(seq 0 4)
+# FOLD_IDXS=$(seq 0 4)
+FOLD_IDXS="0"
 BASEDIR=/Users/ejhumphrey
 METADATA=${BASEDIR}/metadata
 

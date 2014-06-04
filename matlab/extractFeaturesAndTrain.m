@@ -24,12 +24,12 @@ fclose(fid);
 %% Extracting Features
 
 fprintf('Extracting Features \n');
-chordCounts = extractFeatures(list, scratch, chordSet, band);
+chordCounts = extractFeatures(list, features, chordSet, band);
 
 %% Generating Training Data
 
 fprintf('Generating Training Data from the extracted features \n');
-[tr_set, transmat] = genTrainingSet(list, scratch, chordCounts, chordSet, band);
+[tr_set, transmat] = genTrainingSet(list, features, scratch, chordCounts, chordSet, band);
 
 %% Generating Chord Models
 k = 5; % num Gaussians
