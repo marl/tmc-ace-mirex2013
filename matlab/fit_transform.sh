@@ -8,11 +8,11 @@ BASEDIR=/Users/ejhumphrey
 METADATA=${BASEDIR}/metadata
 FEATURE_DIR=${BASEDIR}/${FEATURES}
 
-ESTIMATIONS=${BASEDIR}/estimations/${FEATURES}/
-MODELS=${BASEDIR}/models/${FEATURES}/
+ESTIMATIONS=${BASEDIR}/estimations/${FEATURES}
+MODELS=${BASEDIR}/models/${FEATURES}
 for idx in ${FOLD_IDXS}
 do
-    MODELDIR=${MODELS}/${idx}/
+    MODELDIR=${MODELS}/${idx}
     TRAINLIST=${METADATA}/train${idx}.txt
     matlab -nodisplay -nosplash -r "extractFeaturesAndTrain "\
 "${TRAINLIST} "\
@@ -20,7 +20,7 @@ do
 "${MODELDIR};exit"
 
     TESTLIST=${METADATA}/test${idx}.txt
-    OUTPUTDIR=${ESTIMATIONS}/${idx}/
+    OUTPUTDIR=${ESTIMATIONS}/${idx}
     matlab -nodisplay -nosplash -r "doChordID "\
 "${TESTLIST} "\
 "${FEATURE_DIR} "\
