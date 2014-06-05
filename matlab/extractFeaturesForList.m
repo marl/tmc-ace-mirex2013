@@ -1,6 +1,6 @@
-function extractFeaturesForList(fileList, output_dir)
-
-band = 4;
+function extractFeaturesForList(fileList, output_dir, band)
+band = str2num(band);
+% band = 4;
 
 addpath('./mp3readwrite');
 addpath('./chord_Utils');
