@@ -9,7 +9,7 @@ function extractFeaturesAndTrain(trainFileList, features, model, band)
 %   Path to a directory to write out various model params.
 
 % band = 4;
-
+band = str2num(band);
 addpath('./mp3readwrite');
 addpath('./chord_Utils');
 addpath('./ACR');
