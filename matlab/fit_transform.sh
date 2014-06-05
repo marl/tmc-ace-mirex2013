@@ -19,7 +19,7 @@ then
     echo "Setting all folds"
     FOLD_IDXS=$(seq 0 4)
 else
-    FOLD_IDXS=$2
+    FOLD_IDXS=$3
 fi
 
 FEATURE_DIR=${BASEDIR}/${FEATURES}
