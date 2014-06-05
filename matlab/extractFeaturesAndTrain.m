@@ -1,4 +1,4 @@
-function extractFeaturesAndTrain(trainFileList, features, model)
+function extractFeaturesAndTrain(trainFileList, features, model, band)
 % Parameters
 % ----------
 % trainFileList: str
@@ -8,7 +8,7 @@ function extractFeaturesAndTrain(trainFileList, features, model)
 % model: str
 %   Path to a directory to write out various model params.
 
-band = 4;
+% band = 4;
 
 addpath('./mp3readwrite');
 addpath('./chord_Utils');
