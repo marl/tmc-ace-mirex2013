@@ -36,11 +36,14 @@ do
 "${MODELDIR} "\
 "${BANDS};exit"
 
-    TESTLIST=${METADATA}/test${idx}.txt
-    OUTPUTDIR=${ESTIMATIONS}/${idx}
-    matlab -nodisplay -nosplash -r "doChordID "\
-"${TESTLIST} "\
+    for split in train test
+    do
+        FLIST=${METADATA}/${split}${idx}.txt
+        OUTPUTDIR=${ESTIMATIONS}/${idx}/${split}
+        matlab -nodisplay -nosplash -r "doChordID "\
+"${FLIST} "\
 "${FEATURE_DIR} "\
 "${MODELDIR} "\
 "${OUTPUTDIR};exit"
+    done
 done
