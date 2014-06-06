@@ -22,10 +22,10 @@ else
     FOLD_IDXS=$3
 fi
 
-FEATURE_DIR=${BASEDIR}/${FEATURES}
+FEATURE_DIR=${BASEDIR}/features/${FEATURES}
 
 ESTIMATIONS=${BASEDIR}/estimations/${FEATURES}
-MODELS=${BASEDIR}/models/${FEATURES}
+MODELS=${BASEDIR}/models/mirex-2013/${FEATURES}
 for idx in ${FOLD_IDXS}
 do
     MODELDIR=${MODELS}/${idx}
