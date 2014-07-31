@@ -67,12 +67,12 @@ for song = list{1}'
         fprintf('-> Feature file exists, loading...');
         load(featureFileName);
     else
-        [chroma, beats_in_time, endT] = extractMultibandChroma(song{1}, band);
+        [chroma, time_points, endT] = extractMultibandChroma(song{1}, band);
 
         labFile_name = [song{1} '.txt'];
-        labseg = bs_lab2seg(labFile_name, beats_in_time);
+        labseg = bs_lab2seg(labFile_name, time_points);
 
-        save(featureFileName, 'chroma', 'beats_in_time', 'labseg', 'endT');
+        save(featureFileName, 'chroma', 'time_points', 'labseg', 'endT');
     end
 
     fprintf(' -> Analyzing chords\n');
@@ -111,24 +111,24 @@ for song = list{1}'
     obslik = obslik.^w;
 
     cd = viterbi(ones(Q,1)/Q, transmat, obslik, opt_penalty);
-    if beats_in_time(1) ~= 0
-        beats_in_time = [0; beats_in_time];
+    if time_points(1) ~= 0
+        time_points = [0; time_points];
         cd = [index_map('N') cd];
     end
 
-    if beats_in_time(end) < endT
-        beats_in_time = [beats_in_time; endT];
+    if time_points(end) < endT
+        time_points = [time_points; endT];
         cd = [cd index_map('N')];
     end
 
     idx = find(diff([-1 cd]) ~=0);
     cd = cd(idx);
-    beats_in_time = [beats_in_time(idx); endT];
+    time_points = [time_points(idx); endT];
 
     file = [results filesep name ext '.txt'];
     fid = fopen(file, 'w');
-    for i = 1:length(beats_in_time) - 1
-        fprintf(fid,'%.3f\t%.3f\t%s\n', beats_in_time(i), beats_in_time(i+1), chords{cd(i)});
+    for i = 1:length(time_points) - 1
+        fprintf(fid,'%.3f\t%.3f\t%s\n', time_points(i), time_points(i+1), chords{cd(i)});
     end
     fclose(fid);
     toc

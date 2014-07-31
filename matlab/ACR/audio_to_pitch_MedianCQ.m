@@ -1,14 +1,14 @@
-function [bspitch beats_in_time] = audio_to_pitch_MedianCQ(audio, Fs, beats_in_time, hop, pitch)
-% 
-% convert audio to beat synchronized pitchgram using FFT and log scale 
+function [bspitch time_points] = audio_to_pitch_MedianCQ(audio, Fs, time_points, hop, pitch)
+%
+% convert audio to beat synchronized pitchgram using FFT and log scale
 % energy kernel
 %
-% audio is segmented by times in beats_in_time and converted into pitchspectrum
+% audio is segmented by times in time_points and converted into pitchspectrum
 %
 % inputs:
 %       audio - mono audio signal
 %       Fs - samplerage
-%       beats_in_time - information for time segmentation in sec.
+%       time_points - information for time segmentation in sec.
 %       pmin - minimum pitch should be extracted
 %       pmax - maximum pitch should be extracted
 %
@@ -21,12 +21,12 @@ end
 
 audio = reshape(audio, length(audio),1);
 
-beats_in_time = reshape(beats_in_time, length(beats_in_time),1);
-if beats_in_time(1) ~= 0
-    beats_in_time = [0; beats_in_time]; % insert zero
+time_points = reshape(time_points, length(time_points),1);
+if time_points(1) ~= 0
+    time_points = [0; time_points]; % insert zero
 end
 
-beats_in_sample = round(beats_in_time * Fs);
+beats_in_sample = round(time_points * Fs);
 beats_in_sample = beats_in_sample(beats_in_sample < length(audio));
 nBeats = length(beats_in_sample);
 
@@ -59,4 +59,4 @@ for i = 1:nBeats
     bspitch(:, i) = median(abs(pitch(:,sp:ep)),2);
 end
 
-beats_in_time = beats_in_sample(1:end-1)/Fs;
+time_points = beats_in_sample(1:end-1)/Fs;

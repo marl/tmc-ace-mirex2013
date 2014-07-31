@@ -1,4 +1,4 @@
-function [chroma, beats_in_time, endT] = extractMultibandChroma(song, band)
+function [chroma, time_points, endT] = extractMultibandChroma(song, band)
 
 Fs = 22050;
 win = 4096;
@@ -25,12 +25,12 @@ endT = length(x)/Fs;
 
 % beat synchronization
 fprintf('-> Beat Synchronization ');
-beats_in_time = beat_peter(x, Fs);
-%beats_in_time = beat2(x, Fs);
+time_points = beat_peter(x, Fs);
+%time_points = beat2(x, Fs);
 
 fprintf('-> Generating Pitchgram for Beat-sync ');
 pitch = audio_to_pitch_STCQ(x, Fs, win, hop, 21, 108);
-[pitch, beats_in_time] = audio_to_pitch_MedianCQ(x, Fs, beats_in_time, hop, pitch);
+[pitch, time_points] = audio_to_pitch_MedianCQ(x, Fs, time_points, hop, pitch);
 
 chroma = pitch2multi_chroma(pitch, band);
 

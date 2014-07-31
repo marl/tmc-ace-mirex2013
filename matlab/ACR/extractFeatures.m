@@ -24,12 +24,12 @@ for song = list{1}'
         fprintf('-> Feature file exists');
         load(featureFileName);
     else
-        [chroma, beats_in_time, endT] = extractMultibandChroma(song{1}, band);
+        [chroma, time_points, endT] = extractMultibandChroma(song{1}, band);
 
         labFile_name = [song{1} '.txt'];
-        labseg = bs_lab2seg(labFile_name, beats_in_time);
+        labseg = bs_lab2seg(labFile_name, time_points);
 
-        save(featureFileName, 'chroma', 'beats_in_time', 'labseg', 'endT');
+        save(featureFileName, 'chroma', 'time_points', 'labseg', 'endT');
     end
 
     for m = 1:length(labseg)

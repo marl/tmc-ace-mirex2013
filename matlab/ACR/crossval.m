@@ -113,11 +113,11 @@ for i = 1:nFold
                 labCid(s) = chordStruct2cid(cs);
             end
 
-            to_be_removed = find(beats_in_time > endT(end));
-            beats_in_time = beats_in_time(1:end-length(to_be_removed));
+            to_be_removed = find(time_points > endT(end));
+            time_points = time_points(1:end-length(to_be_removed));
 
             makedir(obslik_root);
-            save(obslik_name, 'obslik', 'beats_in_time', 'labCid', 'startT', 'endT');
+            save(obslik_name, 'obslik', 'time_points', 'labCid', 'startT', 'endT');
         end
 
 
@@ -150,9 +150,9 @@ for i = 1:nFold
         current_time = 0;
         chord_dur = 0;
         while(1)
-            if beats_in_time(beat_idx) < startT(chord_idx)
-                chord_dur = beats_in_time(beat_idx) - current_time;
-                current_time = beats_in_time(beat_idx);
+            if time_points(beat_idx) < startT(chord_idx)
+                chord_dur = time_points(beat_idx) - current_time;
+                current_time = time_points(beat_idx);
 
                 song_confMat(labChordIndex(chord_idx-1), cd(beat_idx-1)) = song_confMat(labChordIndex(chord_idx-1), cd(beat_idx-1)) + chord_dur;
                 beat_idx = beat_idx + 1;
@@ -166,9 +166,9 @@ for i = 1:nFold
 
 
             if chord_idx > length(startT)
-                for remain = beat_idx:length(beats_in_time)
-                    chord_dur = beats_in_time(remain) - current_time;
-                    current_time = beats_in_time(remain);
+                for remain = beat_idx:length(time_points)
+                    chord_dur = time_points(remain) - current_time;
+                    current_time = time_points(remain);
 
                     song_confMat(labChordIndex(end), cd(remain-1)) = song_confMat(labChordIndex(end), cd(remain-1)) + chord_dur;
                 end
@@ -178,7 +178,7 @@ for i = 1:nFold
                 break;
             end
 
-            if beat_idx > length(beats_in_time)
+            if beat_idx > length(time_points)
                 for remain = chord_idx:length(startT)
                     chord_dur = startT(remain) - current_time;
                     current_time = startT(remain);

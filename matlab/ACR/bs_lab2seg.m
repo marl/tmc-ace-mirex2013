@@ -1,4 +1,4 @@
-function [labseg, lab] = bs_lab2seg(labFile, beats_in_time, tolerance)
+function [labseg, lab] = bs_lab2seg(labFile, time_points, tolerance)
 
 if nargin < 3
     tolerance = 0.7;
@@ -12,12 +12,12 @@ for i = 1:length(labChord)
 end
 
 for i = 1:length(labChord)
-    labChordCid(i) = chord2cid(labChord{i}); 
+    labChordCid(i) = chord2cid(labChord{i});
 end
 
 
-if size(beats_in_time, 2) ~=1
-    beats_in_time = beats_in_time';
+if size(time_points, 2) ~=1
+    time_points = time_points';
 end
 
 templab = [[startT; endT(end)], [labChordCid; labChordCid(end)]];
@@ -28,12 +28,12 @@ for i = 2:length(templab)
     end
 end
 
-beat_dur = diff(beats_in_time);
-if beats_in_time(end) < endT(end)
-    beat_dur = [beat_dur; endT(end) - beats_in_time(end)];
+beat_dur = diff(time_points);
+if time_points(end) < endT(end)
+    beat_dur = [beat_dur; endT(end) - time_points(end)];
 end
 
-beats = [beats_in_time, ones(size(beats_in_time)) * -1];
+beats = [time_points, ones(size(time_points)) * -1];
 lab = [lab; beats];
 lab = sortrows(lab);
 
@@ -47,15 +47,15 @@ end
 for i = 2:length(lab)-1
     if lab(i,2) == -1 % if it is from beats
         b_idx = b_idx + 1; % current beat index
-        
+
         % if next is also from beats or from ground truth but the same
         % chord label
-        if (lab(i+1, 2) == -1 || lab(i+1, 2) == lab(i-1,2)) 
+        if (lab(i+1, 2) == -1 || lab(i+1, 2) == lab(i-1,2))
             lab(i,2) = lab(i-1,2);
         else
             dur_to_next_chord = lab(i+1,1) - lab(i,1);
             dur_to_next_beat = beat_dur(b_idx);
-            
+
             if (dur_to_next_chord / dur_to_next_beat > tolerance)
                 lab(i,2) = lab(i-1,2);
             end

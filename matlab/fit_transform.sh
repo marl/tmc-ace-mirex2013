@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASEDIR=/Users/ejhumphrey
+BASEDIR=${DL4MIR}/chord_estimation/
 METADATA=${BASEDIR}/metadata
 
 if [ -z "$1" ]; then
