@@ -23,6 +23,9 @@ for song = list{1}'
     if exist(featureFileName, 'file')
         fprintf('-> Feature file exists');
         load(featureFileName);
+    elseif strncmp(song{1}, '#', 1)
+        fprintf('-> Skipping');
+        continue
     else
         [chroma, beats_in_time, endT] = extractMultibandChroma(song{1}, band);
 

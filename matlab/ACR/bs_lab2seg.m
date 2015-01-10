@@ -63,7 +63,8 @@ for i = 2:length(lab)-1
         labseg = [labseg; lab(i,2)];
     else % if from ground truth
         if lab(i-1,2) == -1 && lab(i+1,2) == -1 % ground truth time is in between beats.
-            chord_dur_to_next_beat = lab(i+1,1) - lab(i,1);
+            chord_dur_to_next_beat = lab(i+1,1) - lab(i,1); 
+            dur_to_next_beat = beat_dur(b_idx);
             if (chord_dur_to_next_beat / dur_to_next_beat > tolerance)
                 lab(i-1,2) = lab(i, 2);
                 labseg(end) = lab(i-1,2);
