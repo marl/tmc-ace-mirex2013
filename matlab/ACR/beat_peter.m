@@ -1,4 +1,4 @@
-function [beats_in_time, noveltyCurve, featureRate] = beat_peter(audio, Fs)
+function [time_points, noveltyCurve, featureRate] = beat_peter(audio, Fs)
 
 %% compute novelty curve
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,7 +73,7 @@ tempoCurve = BPM_c(tempoIdxC);
 % axis xy
 % hold on
 % plot(tempoIdxC, 'r')
-%%    
+%%
 % imagesc(abs(tempogram))
 % set(gca,'YTick',(1:25:length(BPM)))
 % set(gca,'YTickLabel',BPM(1:25:end));
@@ -94,5 +94,4 @@ parameterPLP.tempocurve = tempoCurve;
 
 [~, beats] = fpeaks(PLP); % get beat positions
 
-beats_in_time = beats / featureRate;
-    
+time_points = beats / featureRate;

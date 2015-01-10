@@ -78,7 +78,7 @@ for song = list{1}'
     load(featureFileName);
 
     labFile_name = [song{1} '.txt'];
-    labseg = bs_lab2seg(labFile_name, beats_in_time);
+    labseg = bs_lab2seg(labFile_name, time_points);
 
     fprintf('-> Updating bigrams and training Data\n');
 
