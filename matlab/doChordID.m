@@ -2,7 +2,8 @@ function doChordID(fileList, features, model, results)
 % Parameters
 % ----------
 % fileList: str
-%   Audio file paths as strings in an array.
+%   Audio file paths as strings in an array. Splits on fileparts and only cares
+%   about the basename and the file extension; preceding path is discarded.
 % features: str
 %   Path to feature .mat files matching the given base filenames.
 % model: str
